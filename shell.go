@@ -389,6 +389,20 @@ func (s *Shell) Get(hash, outdir string) error {
 	return extractor.Extract(resp.Output)
 }
 
+func (s *Shell) GetRawTar(hash string) (io.Reader, error) {
+	resp, err := s.Request("get", hash).Option("create", true).Send(context.Background())
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Close()
+
+	if resp.Error != nil {
+		return nil, resp.Error
+	}
+
+	return resp.Output, nil
+}
+
 func (s *Shell) NewObject(template string) (string, error) {
 	var out object
 	req := s.Request("object/new")
