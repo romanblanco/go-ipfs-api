@@ -389,8 +389,8 @@ func (s *Shell) Get(hash, outdir string) error {
 	return extractor.Extract(resp.Output)
 }
 
-func (s *Shell) GetRawTar(hash string) (io.ReadCloser, error) {
-	resp, err := s.Request("get", hash).Option("create", true).Send(context.Background())
+func (s *Shell) GetRawTar(hash ...string) (io.ReadCloser, error) {
+	resp, err := s.Request("get", hash...).Option("create", true).Send(context.Background())
 	if err != nil {
 		return nil, err
 	}
